@@ -6,7 +6,6 @@ class App extends Component {
     return (
       <div className="App" >
         Counter Component here.
-        <Counter store={this.props.store}/>
       </div>
     );
   }
