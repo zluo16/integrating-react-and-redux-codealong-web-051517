@@ -1,7 +1,7 @@
 Integrating createStore with React
 ==============
 
-In this lesson, we will learn how to integrate our createStore library with our react application.   By the end of the lesson you will be able to:
+In this lesson, we will learn how to integrate our createStore library with our react application. By the end of the lesson you will be able to:
 
   * Integrate the createStore method with react.
   * Properly structure a react redux code base.
@@ -9,7 +9,7 @@ In this lesson, we will learn how to integrate our createStore library with our 
 ## Our Goal
 Our goal is to rebuild our counter application with the same user experience, but this time to use react to do it.  So once again, when we click on a button, and the count should increase.
 
-Ok, so the code for creating our store is in our createStore.js file.  Take a look at it.  Notice that for responding to events we are just using plain javascript.   
+Ok, so the code for creating our store is in our createStore.js file. Take a look at it. Notice that for responding to events we are just using plain javascript.   
 
       ...
       let button = document.getElementById('button');
@@ -49,7 +49,7 @@ Instead we want to use react to trigger calls to our dispatch function.  But fir
     export default Counter;
 
   And in src/App.js.
-  
+
 
     import React, { Component } from 'react';
     import Counter from './components/Counter'
@@ -92,9 +92,9 @@ So this is the plan.  First, we create our store by passing our reducer to the c
 So we do the following:
 
   1. Create the store and pass it through our react app as a prop.
-  
+
 	/src/index.js
-    
+
 		...
 		import changeCount from './reducers/changeCount'
 		import createStore from './createStore'
@@ -125,15 +125,15 @@ So we do the following:
 	          )
 	        }
 		}
-		
+
 
 	What does this code do?  Well the button has an a callback to the onClick event, and each time a button is clicked it calls our handleOnClick function.  Then handleOnClick accesses the store from our props that we passed through, and dispatches an action to increase the count.
-	
-		
+
+
     Click on the button!  Ok so nothing happens.  But take a look at the console.  If you click on the button you should see the following.
 
     the state is 1
-    
+
     the action is INCREASE_COUNT
 
     You see that because we added a couple of console.logs in our dispatch method.  So it looks like the action is being dispatched and the state is increasing.  Why then is our dom not updating?  The problem is react never here's these updates.
@@ -154,7 +154,7 @@ So we do the following:
       	}
 
     Then in createStore.js we import the render function from our index.js file.  We also need to remove the render function inside our createStore function.  Finally, make sure there is no dispatch call in the createStore function.  Instead we can call store.dispatch({type: '@@INIT'}) in index.js file.  So ultimately our createStore file looks like the following.
-	
+
 		import { render } from './index.js'
 
 		export default function createStore(reducer){
@@ -166,19 +166,19 @@ So we do the following:
 		      console.log(`the action is ${action.type}`)
 		      render()
 		    }
-	
+
 		    function getState(){
 		      return state;
 		    }
-	
-	
-		    
+
+
+
 		    return {dispatch: dispatch, getState: getState}
-	
+
 		  }
 
   And our index.js file looks like the following.
-  
+
 	  	import React from 'react';
 		import ReactDOM from 'react-dom';
 		import App from './App';
@@ -186,20 +186,18 @@ So we do the following:
 		import createStore from './createStore'
 
 		let store = createStore(changeCount)
-		
+
 		export function render(){
 		  ReactDOM.render(
 		    <App store={store} />,
 		    document.getElementById('root')
 		  );
 		}
-		
+
 		store.dispatch({type: '@@INIT'})
 
-  
+
   Ok, our counter app works!
 
 ## Summary
   Take a look through the code again.  Essentially now the flow is that a react eventHandler calls a callback which then calls store.dispatch() to dispatch an action. Inside the dispatch action, we have a call to render, which re-renders our application.  So everytime someone clicks a button, the store is updated, and then the application is re-rendered.
-  
-
