@@ -1,18 +1,19 @@
 Integrating createStore with React
 ==============
 
-In this lesson, we will learn how to integrate our createStore library with our react application. By the end of the lesson you will be able to:
+In this lesson, we will learn how to integrate our createStore library with our React application. By the end of the lesson you will be able to:
 
   * Integrate the createStore method with react.
-  * Properly structure a react redux code base.
+  * Properly structure a React and Redux code base.
 
 ## Our Goal
 
-Our goal is to rebuild our counter application with the same user experience, but this time to use react to do it. So once again, when we click on a button, and the count should increase.
+Our goal is to rebuild our counter application with the same user experience, but this time we will use React to do it. So once again, when we click on a button the count should increase.
 
-Ok, so the code for creating our store is in our `./redux-pattern.js` file. Take a look at it. Notice that for responding to events we are just using plain javascript.   
+Ok, so the code for creating our store is in our `./redux-pattern.js` file. Take a look at it. Notice that it responding to events using Vanilla JavaScript.   
 
 ```JavaScript
+// ./redux-pattern.js
 ...
 
 const store = createStore();
@@ -28,7 +29,7 @@ Now let's create the react side of our application.
 
 ## Building Our React Interface
 
-Ok, now let's boot up the app by running `npm install && npm start`. This should open a browser window with the app running. You should only see the test `Counter Component here`. If you look at the `./src/App.js` file, you will see the following code. This is where we'll put our new component called counter.
+Ok, now let's boot up the app by running `npm install && npm start`. This should open a browser window with the app running. You should only see the test `Counter Component here`. If you look at the `./src/App.js` file, you will see the following code. This is where we'll put our new component called Counter.
 
 ```JavaScript
 // ./src/App.js
@@ -87,11 +88,11 @@ class App extends Component {
 export default App;
 ```
 
-Ok, now we should see a button on the page.  Looks like the visuals for our react component is complete.  The next thing to do is to integrate some redux.
+Ok, so now we should see a button on the page. Looks like the visuals for our React component is complete. The next thing to do is to integrate some Redux.
 
 ## Importing Redux
 
-Start by looking at the file `./src/createStore.js`. Take the createStore function from our `./redux-pattern.js` file and move it into the `./src/createStore.js` file. We also need to comment out the `render()` function closure fro the `dispatch()` function. We will come back to that latter.
+Start by looking at the file `./src/createStore.js`. Take the `createStore()` function from our `./redux-pattern.js` file and move it into the `./src/createStore.js` file. We also need to comment out the `render()` function closure inside the `dispatch()` function. We will come back to this later.
 
 ```JavaScript
 // ./src/createStore.js
@@ -117,9 +118,7 @@ export default function createStore(reducer) {
 }
 ```
 
-In the `createStore()` function, you will find it calling a closure function called `render()` that we imported form `./src/index.js`. We need that function to re-render our component every time our store is updated.  
-
-Ok, now that we have added our create store method, we will want to use it. But remember that `createStore()` takes an argument of a reducer. So let's move that over too. Open the file `./src/reducers/changeCount.js`. Find the changeCount method from the `./redux-pattern.js` file and move it into the `./src/reducers/changeCount.js`.
+Ok, now that we have added our create store method, we will want to use it. But remember that `createStore()` takes an argument of a reducer. So let's move that over too. Open the file `./src/reducers/changeCount.js`. Find the `changeCount()` method from the `./redux-pattern.js` file and move it into the `./src/reducers/changeCount.js`.
 
 ```JavaScript
 // ./src/reducers/changeCount.js
@@ -136,7 +135,7 @@ export default function changeCount(state = {
 };
 ```
 
-Ok, done and done. We moved our redux code over to our new application, and we already built out our react component, so the only thing left is to tie these two pieces together. Let's do it!
+Ok, done and done. We moved our Redux code over to our new application, and we already built out our React component, so the only thing left is to tie these two pieces together. Let's do it!
 
 ## Integrating Redux
 
@@ -197,7 +196,7 @@ So we'll do the following:
 
   ```
 
-	What does this code do? Well the button has a callback to the onClick event, and each time a button is clicked it calls our handleOnClick function. Then handleOnClick accesses the store from our props that we passed through, and dispatches an action to increase the count.
+	What does this code do? Well the button has a callback to the onClick event, and each time a button is clicked it calls our `handleOnClick()` function. Then handleOnClick accesses the store from our props that we passed through, and dispatches an action to increase the count.
 
   Click on the button! Ok so nothing happens. But take a look at the console. If you click on the button you should see the following.
 
@@ -207,9 +206,9 @@ So we'll do the following:
 
   You see that because we added a couple of console.logs in our dispatch method. So it looks like the action is being dispatched and the state is increasing. Why then is our DOM not updating?  The problem is react never here's these updates.
 
-3. Tell react about these updates by re-rendering
+3. Tell React about these updates by re-rendering
 
-	Ok, so the easy way to tell react about these updates is simply to re-render the entire application.  While this is a pretty non-performant practice, its fine for now.  And doing it is fairly straightforward.
+	Ok, so the easy way to tell react about these updates is simply to re-render the entire application. While this is a pretty non-performant practice, its fine for now. It is also fairly straightforward.
 
 	Since our `ReactDom.render()` call is wrapped in a export function called render, in our `./src/index.js`. Then we just need to call render from our dispatch method in createStore. So we need to do the following:
 
@@ -241,7 +240,7 @@ So we'll do the following:
   }
   ```
 
-  We also need to initiate a dipsatch method to start the store state in our `./src/index.js` file. Our `./src/index.js` file should now look like the following:
+  We also need to initiate a dispatch call to start the store state in our `./src/index.js` file. Our `./src/index.js` file should now look like the following:
 
   ```JavaScript
   // ./src/index.js
