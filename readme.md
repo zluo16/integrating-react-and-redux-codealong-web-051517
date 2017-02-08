@@ -9,13 +9,17 @@ In this lesson, we will learn how to integrate our createStore library with our 
 ## Our Goal
 Our goal is to rebuild our counter application with the same user experience, but this time to use react to do it.  So once again, when we click on a button, and the count should increase.
 
-Ok, so the code for creating our store is in our createStore.js file. Take a look at it. Notice that for responding to events we are just using plain javascript.   
+Ok, so the code for creating our store is in our redux-pattern.js file. Take a look at it. Notice that for responding to events we are just using plain javascript.   
 
-      ...
-      let button = document.getElementById('button');
-      button.addEventListener('click', function(){
-        store.dispatch({type: 'INCREASE_COUNT'})
-      })
+```JavaScript
+...
+
+const store = createStore();
+let button = document.getElementById('button');
+button.addEventListener('click', function(){
+  store.dispatch({ type: 'INCREASE_COUNT' });
+})
+```
 
 Instead we want to use react to trigger calls to our dispatch function.  But first thing's first.  Let's create the react side of our application.
 
