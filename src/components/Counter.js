@@ -1,12 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-class Counter extends Component {
-  render(){
-    return (<div>
+export default (props) => {
+  return (
+    <div>
       Counter Component
     </div>
-    )
-  }
-}
-
-export default Counter;
+  )
+};
