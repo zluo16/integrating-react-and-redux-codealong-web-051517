@@ -3,8 +3,8 @@ Integrating createStore with React
 
 In this lesson, we will learn how to integrate our createStore library with our React application. By the end of the lesson you will be able to:
 
-  * Integrate the createStore method with react.
-  * Properly structure a React and Redux code base.
+  * Integrate the __createStore()__ function with react.
+  * Properly structure a __React & Redux__ code base.
 
 ## Our Goal
 
@@ -18,9 +18,9 @@ Ok, so the code for creating our store is in our `./redux-pattern.js` file. Take
 
 const store = createStore();
 let button = document.getElementById('button');
-button.addEventListener('click', function(){
+button.addEventListener('click', function() {
   store.dispatch({ type: 'INCREASE_COUNT' });
-})
+});
 ```
 
 If you would like to try it out open the index.html file in your browser.
@@ -67,7 +67,7 @@ export default (props) => {
 };
 ```
 
-We now want to add the _Counter Component_ to to the `./src/App.js` Component and pass in the store as props.
+We now want to add the __Counter__ Component to to the `./src/App.js` Component and pass in the store as props.
 
 ```JavaScript
 // ./src/App.js
@@ -88,7 +88,7 @@ class App extends Component {
 export default App;
 ```
 
-Ok, so now we should see a button on the page. Looks like the visuals for our React component is complete. The next thing to do is to integrate some Redux.
+Ok, so now we should see a button on the page. Looks like the visuals for our __React__ component is complete. The next thing to do is to integrate some __Redux__.
 
 ## Importing Redux
 
@@ -105,17 +105,17 @@ export default function createStore(reducer) {
     console.log(`the state is ${state.count}`)
     console.log(`the action is ${action.type}`)
     // render()
-  }
+  };
 
-  function getState(){
+  function getState() {
     return state;
-  }
+  };
 
   return {
     dispatch,
     getState
-  }
-}
+  };
+};
 ```
 
 Ok, now that we have added our create store method, we will want to use it. But remember that `createStore()` takes an argument of a reducer. So let's move that over too. Open the file `./src/reducers/changeCount.js`. Find the `changeCount()` method from the `./redux-pattern.js` file and move it into the `./src/reducers/changeCount.js`.
@@ -129,6 +129,7 @@ export default function changeCount(state = {
   switch (action.type) {
     case 'INCREASE_COUNT':
       return { count: state.count + 1 };
+      
     default:
       return state;
   };
@@ -168,7 +169,7 @@ So we'll do the following:
   render();
   ```
 
-  Ok, this is pretty good.  Now our app component will have access to the store, and because of this, we can call `store.dispatch({ type: 	'INCREASE_COUNT' })` every time the user clicks on a button.
+  Ok, this is pretty good.  Now our app component will have access to the store, and because of this, we can call `store.dispatch({ type: 'INCREASE_COUNT' })` every time the user clicks on a button.
 
 
 2. Dispatch an action each time the button is clicked.
@@ -196,76 +197,76 @@ So we'll do the following:
 
   ```
 
-	What does this code do? Well the button has a callback to the onClick event, and each time a button is clicked it calls our `handleOnClick()` function. Then handleOnClick accesses the store from our props that we passed through, and dispatches an action to increase the count.
+What does this code do? Well the button has a callback to the onClick event, and each time a button is clicked it calls our __handleOnClick()__ function. Then __handleOnClick()__ accesses the store from our props that we passed through, and dispatches an action to increase the count.
 
-  Click on the button! Ok so nothing happens. But take a look at the console. If you click on the button you should see the following.
+Click on the button! Ok so nothing happens. But take a look at the console. If you click on the button you should see the following.
 
-  the state is 1
+the state is 1
 
-  the action is INCREASE_COUNT
+the action is INCREASE_COUNT
 
-  You see that because we added a couple of console.logs in our dispatch method. So it looks like the action is being dispatched and the state is increasing. Why then is our DOM not updating?  The problem is react never here's these updates.
+You see that because we added a couple of console.logs in our dispatch method. So it looks like the action is being dispatched and the state is increasing. Why then is our DOM not updating?  The problem is react never here's these updates.
 
-3. Tell React about these updates by re-rendering
+3. Tell __React__ about these updates by re-rendering
 
-	Ok, so the easy way to tell react about these updates is simply to re-render the entire application. While this is a pretty non-performant practice, its fine for now. It is also fairly straightforward.
+Ok, so the easy way to tell react about these updates is simply to re-render the entire application. While this is a pretty non-performant practice, its fine for now. It is also fairly straightforward.
 
-	Since our `ReactDom.render()` call is wrapped in a export function called render, in our `./src/index.js`. Then we just need to call render from our dispatch method in createStore. So we need to do the following:
+Since our __ReactDom.render()__ call is wrapped in a export function called render, in our `./src/index.js`. Then we just need to call render from our dispatch method in createStore. So we need to do the following:
 
-  In our `./src/createStore.js` we need to import the `render()` function from our `./src/index.js` file and uncomment the `render()` function closure in the `dispatch()` function. So ultimately our `./src/createStore.js` file looks like the following.
+In our `./src/createStore.js` we need to import the `render()` function from our `./src/index.js` file and uncomment the `render()` function closure in the `dispatch()` function. So ultimately our `./src/createStore.js` file looks like the following.
 
-  ```JavaScript
-  // ./src/createStore.js
+```JavaScript
+// ./src/createStore.js
 
-  import { render } from './index.js';
+import { render } from './index.js';
 
-  export default function createStore(reducer) {
-    let state;
+export default function createStore(reducer) {
+  let state;
 
-    function dispatch(action) {
-      state = reducer(state, action)
-      console.log(`the state is ${state.count}`)
-      console.log(`the action is ${action.type}`)
-      render();
-    }
-
-    function getState() {
-      return state;
-    }
-
-    return {
-      dispatch,
-      getState
-    }
-  }
-  ```
-
-  We also need to initiate a dispatch call to start the store state in our `./src/index.js` file. Our `./src/index.js` file should now look like the following:
-
-  ```JavaScript
-  // ./src/index.js
-
-  import React from 'react';
-  import ReactDOM from 'react-dom';
-  import App from './App';
-  import changeCount from './reducers/changeCount';
-  import createStore from './createStore';
-
-  const store = createStore(changeCount);
-
-  export function render() {
-    ReactDOM.render(
-      <App store={store} />,
-      document.getElementById('root')
-    );
+  function dispatch(action) {
+    state = reducer(state, action)
+    console.log(`the state is ${state.count}`)
+    console.log(`the action is ${action.type}`)
+    render();
   };
 
-  store.dispatch({ type: '@@INIT' });
+  function getState() {
+    return state;
+  };
 
-  // remove render() here
-  ```
+  return {
+    dispatch,
+    getState
+  };
+};
+```
 
-  Ok, now our counter app works!
+We also need to initiate a dispatch call to start the store state in our `./src/index.js` file. Our `./src/index.js` file should now look like the following:
+
+```JavaScript
+// ./src/index.js
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import changeCount from './reducers/changeCount';
+import createStore from './createStore';
+
+const store = createStore(changeCount);
+
+export function render() {
+  ReactDOM.render(
+    <App store={store} />,
+    document.getElementById('root')
+  );
+};
+
+store.dispatch({ type: '@@INIT' });
+
+// remove render() here
+```
+
+Ok, now our counter app works!
 
 ## Summary
 
