@@ -3,14 +3,14 @@ Integrating createStore with React
 
 In this lesson, we will learn how to integrate our createStore library with our React application. By the end of the lesson you will be able to:
 
-  * Integrate the __createStore()__ function with react.
+  * Integrate the __createStore()__ function with React.
   * Properly structure a __React & Redux__ code base.
 
 ## Our Goal
 
 Our goal is to rebuild our counter application with the same user experience, but this time we will use React to do it. So once again, when we click on a button the count should increase.
 
-Ok, so the code for creating our store is in our `./redux-pattern.js` file. Take a look at it. Notice that it responding to events using Vanilla JavaScript.   
+Ok, so the code for creating our store is in our `./redux-pattern.js` file. Take a look at it. Notice that it responds to events using Vanilla JavaScript.   
 
 ```JavaScript
 // ./redux-pattern.js
@@ -25,7 +25,7 @@ button.addEventListener('click', function() {
 
 If you would like to try it out open the index.html file in your browser.
 
-Now let's create the react side of our application.
+Now let's create the React side of our application.
 
 ## Building Our React Interface
 
@@ -88,7 +88,7 @@ class App extends Component {
 export default App;
 ```
 
-Ok, so now we should see a button on the page. Looks like the visuals for our __React__ component is complete. The next thing to do is to integrate some __Redux__.
+Ok, so now we should see a button on the page. Looks like the visuals for our __React__ component are complete. The next thing to do is to integrate some __Redux__.
 
 ## Importing Redux
 
@@ -129,7 +129,7 @@ export default function changeCount(state = {
   switch (action.type) {
     case 'INCREASE_COUNT':
       return { count: state.count + 1 };
-      
+
     default:
       return state;
   };
@@ -144,7 +144,7 @@ So this is the plan. First, we create our store by passing our reducer to the `c
 
 So we'll do the following:
 
-1. Create the store and pass it through our react app as a prop.
+1. Create the store and pass it through our React app as a prop.
 
   We will need to import our reducer and a store and set a variable of store that calls our `createStore()` function. We also need to pass our store variable as props to our _App component_. Our `'./src/index.js'` code should now look like this:
 
@@ -209,9 +209,9 @@ You see that because we added a couple of console.logs in our dispatch method. S
 
 3. Tell __React__ about these updates by re-rendering
 
-Ok, so the easy way to tell react about these updates is simply to re-render the entire application. While this is a pretty non-performant practice, its fine for now. It is also fairly straightforward.
+Ok, so the easy way to tell React about these updates is simply to re-render the entire application. While this is a pretty non-performant practice, its fine for now. It is also fairly straightforward.
 
-Since our __ReactDom.render()__ call is wrapped in a export function called render, in our `./src/index.js`. Then we just need to call render from our dispatch method in createStore. So we need to do the following:
+Since our __ReactDom.render()__ call is wrapped in a export function called render in our `./src/index.js`, then we just need to call render from our dispatch method in createStore. So we need to do the following:
 
 In our `./src/createStore.js` we need to import the `render()` function from our `./src/index.js` file and uncomment the `render()` function closure in the `dispatch()` function. So ultimately our `./src/createStore.js` file looks like the following.
 
