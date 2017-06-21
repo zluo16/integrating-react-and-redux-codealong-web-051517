@@ -205,7 +205,7 @@ the state is 1
 
 the action is INCREASE_COUNT
 
-You see that because we added a couple of console.logs in our dispatch method. So it looks like the action is being dispatched and the state is increasing. Why then is our DOM not updating?  The problem is react never here's these updates.
+You see that because we added a couple of console.logs in our dispatch method. So it looks like the action is being dispatched and the state is increasing. Why then is our DOM not updating?  The problem is, React never hears these updates.
 
 3. Tell __React__ about these updates by re-rendering
 
@@ -271,3 +271,5 @@ Ok, now our counter app works!
 ## Summary
 
 Take a look through the code again. Essentially now the flow is that a React eventHandler calls a callback which then calls `store.dispatch()` to dispatch an action. Inside the dispatch action, we have a call to `render()`, which re-renders our application. So each time someone clicks on our counter button, the store is updated, and then the application is re-rendered.
+
+<p class='util--hide'>View <a href='https://learn.co/lessons/integrating-react-and-redux-codealong'>Integrating React And Redux Codealong</a> on Learn.co and start learning to code for free.</p>
